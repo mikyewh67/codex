@@ -58,3 +58,21 @@ With Node.js installed, run `npm test`. No dependency installation is needed. Th
 ## Privacy / source handling
 
 The original uploaded course files, recordings/transcripts, spreadsheets, and handwritten images are **not included in this repository**. The app contains derived study logic and original question generators only.
+
+## Ledger mobile redesign
+
+The app now uses a matte-black and champagne-gold interface, a fixed five-tab mobile navigation bar, an animated mastery ring, and ten-question practice sessions. Incorrect answers still queue two targeted follow-ups, which can extend a session beyond ten questions. Session completion, correct streak milestones, and feedback have short animations that respect reduced-motion preferences.
+
+The journal editor becomes stacked account cards on small screens. Add/remove rows and live debit/credit totals are available in practice and test mode. Hints preserve entered answers. The timed test continues counting down when switching sections.
+
+### Home Screen installation
+
+Open the deployed site in iPhone Safari, choose Share → Add to Home Screen, leave Open as Web App enabled if shown, and tap Add. The app includes a web manifest, standalone display settings, safe-area spacing, and 180/192/512-pixel icons. Replace an older shortcut if its title/icon remains cached. Internet access is required; this release does not cache the course offline.
+
+### Progress and backups
+
+Existing progress uses the same browser-storage key and is preserved. The More tab includes JSON backup/restore. Progress is local to each browser/origin; back it up before switching hostnames, devices, or clearing browser data. Mastery is a practice-progress estimate, not a predicted test result. Daily goals count practice attempts on the device’s local date.
+
+### Validation for this redesign
+
+The existing 800-question engine suite and JavaScript syntax checks pass. The redesign also has browser verification for responsive layouts, hints, reinforcement, session completion, local persistence, progress backup/restore, journal controls, test navigation/submission, reduced motion, and Home Screen assets.
