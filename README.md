@@ -76,3 +76,13 @@ Existing progress uses the same browser-storage key and is preserved. The More t
 ### Validation for this redesign
 
 The existing 800-question engine suite and JavaScript syntax checks pass. The redesign also has browser verification for responsive layouts, hints, reinforcement, session completion, local persistence, progress backup/restore, journal controls, test navigation/submission, reduced motion, and Home Screen assets.
+
+## Visual learning library
+
+The Learn tab contains eight tutorials with 26 reading pages. Each page combines plain-language explanation, an original visual or interactive example, and a takeaway. Topics cover account classification, statements, accounting equations, transaction effects, normal balances, journals, posting, account balances, trial balances, and statement preparation. Worked solutions can be revealed one step at a time and replayed. Reading completion is stored separately from practice mastery and is included in progress backups.
+
+Review topic buttons route by the question's generator when necessary (for example, an abnormal-balance question opens debit/credit instruction even when sampled in trial-balance practice). Practice answers, question identity, and reinforcement queues are retained during tutorial visits. Mistake review and every test-result card also link to a tutorial.
+
+The test welcome screen offers two modes: untimed guided practice with topic review on each question, and a timed 120-minute exam without in-question tutorial buttons. Both use the same 15-question / 31-point structure; histories distinguish guided and timed attempts. Topic review is available from timed-exam results.
+
+The tutorial update was checked across all 26 pages at 320, 390, 768, and 1440 pixel widths, with no page-level horizontal overflow. Browser checks verified interactive examples, reading persistence without mastery changes, and returning from tutorials with answers intact for all 15 guided-test questions, including numeric, multiple-choice, multi-part, journal, summary, and journal-set controls. The existing 800-question engine checks continue to pass.

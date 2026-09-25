@@ -1,3 +1,4 @@
+import { TUTORIALS, renderVisual, wireVisual, topicForQuestion } from './tutorials.js';
 import { SECTIONS, QUICK_RULES, TEST_DATE } from './course-data.js';
 import {
   generateForSection, generateByGenerator, gradeQuestion, expectedAnswerText,
@@ -70,6 +71,7 @@ function defaultState() {
     mistakes: [],
     lastSection: 'transaction-analysis',
     daily: {},
+    lessonsRead: {},
     practiceTests: []
   };
 }
@@ -88,6 +90,7 @@ let practice = {
   originGenerator: null
 };
 let testSession = null;
+let tutorial = {topic:'foundations',page:0,returnTo:null};
 let sprint = {answered:0, correct:0, target:10, active:false};
 
 function loadState() {
@@ -122,7 +125,7 @@ function setView(view) {
   if(activeView==='test' && testSession && !testSession.finished) saveCurrentTestAnswer();
   activeView = view;
   navButtons.forEach(b => {
-    const selected=b.dataset.view === view || (b.dataset.view==='more' && ['cheat','mistakes'].includes(view));
+    const selected=b.dataset.view === view || (b.dataset.view==='learn' && view==='tutorial') || (b.dataset.view==='more' && ['cheat','mistakes'].includes(view));
     b.classList.toggle('active',selected);
     if(selected)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');
   });
@@ -160,6 +163,7 @@ function render() {
   if (activeView === 'mistakes') renderMistakes();
   if (activeView === 'cheat') renderCheat();
   if (activeView === 'more') renderMore();
+  if (activeView === 'tutorial') renderTutorial();
 }
 
 function renderDashboard() {
@@ -185,10 +189,10 @@ function renderDashboard() {
     ${modeCard('journal','Journal lab','Build entries, step by step.','journal')}
     ${modeCard('bolt','Quick practice','Sharpen debit & credit instincts.','debits-credits')}
     ${modeCard('target','Test simulation','15 questions. The real format.','test')}
-    ${modeCard('repeat','Your comeback','Turn mistakes into strengths.','mistakes')}
+    ${modeCard('book','Visual tutorials','Read it. See it. Understand it.','learn')}
    </div>
    <div class="card daily-card"><div class="daily-top"><strong>${icon('spark')}Your daily momentum</strong><span>${todayCount()} / 20</span></div><div class="progress-track"><div class="progress-fill" style="width:${Math.min(todayCount()/20*100,100)}%"></div></div><p>${todayCount()>=20?'Daily goal complete. Look at you showing up.':'Aim for 20 questions today. Every attempt counts.'}</p></div>
-   ${latest?`<div class="history-mini"><span>Last practice test</span><strong>${latest.score} / 31 · ${Math.round(latest.score/31*100)}%</strong></div>`:''}
+   ${latest?`<div class="history-mini"><span>Last ${latest.mode==='guided'?'guided practice':'timed test'}</span><strong>${latest.score} / 31 · ${Math.round(latest.score/31*100)}%</strong></div>`:''}
   </section>
   <section><div class="section-heading"><h2>Your skill map</h2><button class="link-btn" id="openLessons">Explore lessons ${icon('arrow')}</button></div><div class="card topics">
   ${SECTIONS.map((section,i)=>`<button class="topic-row" data-practice-section="${section.id}"><span class="topic-number">0${i+1}</span><span><strong>${escapeHtml(section.short)}</strong><span class="progress-track" style="display:block"><span class="progress-fill" style="display:block;width:${state.mastery[section.id]||0}%"></span></span></span><span>${state.mastery[section.id]||0}%</span></button>`).join('')}
@@ -197,28 +201,40 @@ function renderDashboard() {
  app.querySelector('#continueAdaptive').onclick=()=>sprint.active&&sprint.answered>0?setView('practice'):startPractice(weak.id);
  app.querySelector('#openLessons').onclick=()=>setView('learn');
  app.querySelectorAll('[data-practice-section]').forEach(b=>b.onclick=()=>startPractice(b.dataset.practiceSection));
- app.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>['test','mistakes'].includes(b.dataset.mode)?setView(b.dataset.mode):startPractice(b.dataset.mode));
+ app.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>['test','mistakes','learn'].includes(b.dataset.mode)?setView(b.dataset.mode):startPractice(b.dataset.mode));
  countUp();
 }
 function modeCard(symbol,title,subtitle,mode){return `<button class="mode-card" data-mode="${mode}"><span class="mode-icon">${icon(symbol)}</span><span class="mode-arrow">${icon('arrow')}</span><strong>${title}</strong><small>${subtitle}</small></button>`;}
 
 function renderLearn() {
-  app.innerHTML = `
-    <div class="page-intro"><div class="eyebrow">UNDERSTAND IT. THEN OWN IT.</div><h2 class="page-title">The learning library.</h2><p>Eight skills. Bite-sized lessons. Your professor’s approach.</p></div>
-    <div class="accordion">
-      ${SECTIONS.map((s,i)=>`
-        <details class="card lesson-card">
-          <summary><span class="lesson-index">0${i+1}</span>${escapeHtml(s.short)}</summary>
-          <div class="body">
-            <p class="badge">Key emphasis</p>
-            <p><strong>${escapeHtml(s.emphasis)}</strong></p>
-            <ul class="lesson-list">${s.lesson.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul>
-            <div class="trap-box"><strong>Common traps</strong><ul class="lesson-list">${s.traps.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul></div>
-            <div class="question-actions"><button class="btn btn-primary" data-practice-section="${s.id}">Practice this section</button></div>
-          </div>
-        </details>`).join('')}
-    </div>`;
-  app.querySelectorAll('[data-practice-section]').forEach(b => b.onclick = () => startPractice(b.dataset.practiceSection));
+ const completed=Object.keys(state.lessonsRead||{}).filter(id=>TUTORIALS[id]).length;
+ app.innerHTML=`<div class="page-intro"><div class="eyebrow">LESS GUESSING. MORE UNDERSTANDING.</div><h2 class="page-title">Learn it. See it. Get it.</h2><p>Read at your pace. Move the numbers. Follow the reasoning.</p></div>
+ <section class="learn-welcome card"><div><span class="badge warn">${icon('book')} VISUAL LEARNING LIBRARY</span><h3>Start with the why.</h3><p>No score. No timer. Just clear explanations and examples you can work through.</p></div><div class="read-progress"><strong>${completed}<span> / 8</span></strong><small>lessons marked read</small></div></section>
+ <div class="tutorial-grid">${SECTIONS.map((section,i)=>{const lesson=TUTORIALS[section.id];return `<button class="tutorial-card card" data-open-tutorial="${section.id}"><div class="tutorial-card-top"><span class="lesson-index">0${i+1}</span><span class="badge ${state.lessonsRead?.[section.id]?'good':''}">${state.lessonsRead?.[section.id]?'Read ✓':lesson.minutes+' min read'}</span></div><span class="tutorial-preview" aria-hidden="true">${['A = L + E','? + ? = ?','↑ A & ↓ A','DEBIT │ CREDIT','Dr  =  Cr','T-accounts','Σ Dr = Σ Cr','Income → Equity'][i]}</span><h3>${escapeHtml(section.short)}</h3><p>${escapeHtml(lesson.description)}</p><span class="tutorial-card-bottom">${lesson.pages.length} short pages <span>Read lesson ${icon('arrow')}</span></span></button>`;}).join('')}</div>`;
+ app.querySelectorAll('[data-open-tutorial]').forEach(b=>b.onclick=()=>openTutorial(b.dataset.openTutorial));
+}
+function openTutorial(topic,returnTo=null){
+ tutorial={topic:TUTORIALS[topic]?topic:'foundations',page:0,returnTo};
+ setView('tutorial');
+}
+function renderTutorial(){
+ const lesson=TUTORIALS[tutorial.topic],page=lesson.pages[tutorial.page];
+ const last=tutorial.page===lesson.pages.length-1;
+ app.innerHTML=`<div class="tutorial-toolbar"><button class="link-btn" id="allLessons">← All lessons</button>${tutorial.returnTo?`<button class="btn btn-light" id="returnToQuestion">${tutorial.returnTo==='test'&&testSession?.finished?'Back to results':tutorial.returnTo==='mistakes'?'Back to mistakes':'Back to my question'} ${icon('arrow')}</button>`:''}</div>
+ <div class="tutorial-heading"><span class="eyebrow">${escapeHtml(sectionById(tutorial.topic).short)} · VISUAL TUTORIAL</span><h2>${escapeHtml(lesson.title)}</h2><p>${escapeHtml(lesson.description)}</p></div>
+ <nav class="lesson-pagination" aria-label="Tutorial pages">${lesson.pages.map((p,i)=>`<button data-lesson-page="${i}" aria-label="Page ${i+1}: ${escapeHtml(p.title)}" ${i===tutorial.page?'aria-current="step"':''}><span>0${i+1}</span><span>${escapeHtml(p.title)}</span></button>`).join('')}</nav>
+ <article class="tutorial-article"><div class="tutorial-reading"><div class="eyebrow">PAGE ${tutorial.page+1} OF ${lesson.pages.length}</div><h3>${escapeHtml(page.title)}</h3>${page.text.map(t=>`<p>${escapeHtml(t)}</p>`).join('')}<div class="tutorial-takeaway"><span>${icon('spark')} THE IDEA TO KEEP</span><p>${escapeHtml(page.takeaway)}</p></div></div><section class="tutorial-visual card" aria-label="Visual example"><div class="visual-heading"><span class="eyebrow">SEE IT IN ACTION</span><span class="badge">Worked example</span></div>${renderVisual(page.visual)}</section></article>
+ <div class="lesson-navigation"><button class="btn btn-light" id="previousLessonPage" ${tutorial.page===0?'disabled':''}>← Previous</button>${last?`<button class="btn btn-primary" id="markLessonRead">${state.lessonsRead?.[tutorial.topic]?'Lesson read ✓':'Mark lesson read'} ${icon('check')}</button>`:`<button class="btn btn-primary" id="nextLessonPage">Next page ${icon('arrow')}</button>`}</div>
+ ${last?`<div class="lesson-finish card"><h3>Ready to use it?</h3><p>Your practice mastery changes when you practice. Reading this lesson is tracked separately.</p><button class="btn btn-light" id="practiceLesson">Practice ${escapeHtml(sectionById(tutorial.topic).short)}</button>${tutorial.returnTo?`<button class="btn btn-primary" id="returnAfterLesson">${tutorial.returnTo==='test'&&testSession?.finished?'Return to results':'Return to my question'}</button>`:''}</div>`:''}`;
+ app.querySelector('#allLessons').onclick=()=>setView('learn');
+ function go(index){tutorial.page=index;renderTutorial();transitionView();app.focus({preventScroll:true});window.scrollTo({top:0,behavior:'instant'});}
+ app.querySelectorAll('[data-lesson-page]').forEach(b=>b.onclick=()=>go(Number(b.dataset.lessonPage)));
+ app.querySelector('#previousLessonPage').onclick=()=>go(tutorial.page-1);
+ app.querySelector('#nextLessonPage')?.addEventListener('click',()=>go(tutorial.page+1));
+ app.querySelector('#markLessonRead')?.addEventListener('click',()=>{state.lessonsRead={...(state.lessonsRead||{}),[tutorial.topic]:new Date().toISOString()};saveState();app.querySelector('#markLessonRead').textContent='Lesson read ✓';toast('Lesson saved as read.');});
+ app.querySelector('#practiceLesson')?.addEventListener('click',()=>startPractice(tutorial.topic));
+ for(const id of ['returnToQuestion','returnAfterLesson'])app.querySelector('#'+id)?.addEventListener('click',()=>setView(tutorial.returnTo));
+ wireVisual(app,page.visual);
 }
 
 function startPractice(sectionId) {
@@ -280,7 +296,7 @@ function renderPractice() {
           <div class="practice-settings"><label class="small muted" for="sectionSelect">TRAINING FOCUS</label>
           <select id="sectionSelect">${SECTIONS.map(s=>`<option value="${s.id}" ${s.id===practice.section?'selected':''}>${escapeHtml(s.short)}</option>`).join('')}</select>
           <div class="compact-mastery"><strong>${state.mastery[practice.section]}%</strong><small>Mastery</small></div></div>
-          <div class="practice-extras"><span>${practice.reinforcementQueue.length?`${practice.reinforcementQueue.length} follow-ups queued`:`${state.streak} correct in a row`}</span><button class="link-btn" id="readLesson">Review lesson</button></div>
+          <div class="practice-extras"><span>${practice.reinforcementQueue.length?`${practice.reinforcementQueue.length} follow-ups queued`:`${state.streak} correct in a row`}</span><button class="link-btn" id="readLesson">Review topic</button></div>
         </div>
       </aside>
       <section class="card question-card">
@@ -291,6 +307,7 @@ function renderPractice() {
           ${practice.isReinforcement ? `<span class="badge warn">Reinforcement · ${practice.reinforcementQueue.length + 1} remaining</span>` : '<span class="badge">New problem</span>'}
         </div>
         <div class="question-text">${escapeHtml(practice.question.prompt)}</div>
+        <button class="topic-review" id="reviewPracticeTopic">${icon('book')} Review topic <span>Learn the steps first ${icon('arrow')}</span></button>
         <div id="answerArea">${renderAnswerControls(practice.question, practice.response, false)}</div>
         ${!practice.submitted && practice.hintIndex >= 0 ? `<div class="hint"><strong>Hint ${practice.hintIndex+1}:</strong> ${escapeHtml(practice.question.hints[practice.hintIndex] || 'Use the three-step process: financial position → accounts → debit/credit.')}</div>` : ''}
         ${practice.submitted ? renderPracticeFeedback() : ''}
@@ -300,8 +317,9 @@ function renderPractice() {
       </section>
     </div>`;
 
+  app.querySelector('#reviewPracticeTopic').onclick=()=>openTutorial(topicForQuestion(practice.question),'practice');
   app.querySelector('#sectionSelect').onchange = e => startPractice(e.target.value);
-  app.querySelector('#readLesson').onclick = () => setView('learn');
+  app.querySelector('#readLesson').onclick = () => openTutorial(topicForQuestion(practice.question),'practice');
   if (!practice.submitted) {
     app.querySelector('#submitPractice').onclick = submitPracticeAnswer;
     app.querySelector('#showHint').onclick = () => {
@@ -469,9 +487,10 @@ function renderMistakes() {
           <p class="small"><strong>Your answer:</strong> <span style="white-space:pre-line">${escapeHtml(m.your)}</span></p>
           <p class="small"><strong>Correct:</strong> <span style="white-space:pre-line">${escapeHtml(m.correct)}</span></p>
           <p class="small muted">${escapeHtml(m.explanation)}</p>
-          <button class="btn btn-light" data-retry-generator="${escapeHtml(m.generator)}" data-section="${escapeHtml(m.section)}">Practice this type</button>
+          <button class="link-btn mistake-lesson" data-mistake-lesson="${topicForQuestion(m)}">Review topic →</button><br><button class="btn btn-light" data-retry-generator="${escapeHtml(m.generator)}" data-section="${escapeHtml(m.section)}">Practice this type</button>
         </div>`).join('') : `<div class="empty">${icon('shield')}A clean slate.<br>Your missed questions will live here, ready for a comeback.</div>`}
     </div>`;
+  app.querySelectorAll('[data-mistake-lesson]').forEach(b=>b.onclick=()=>openTutorial(b.dataset.mistakeLesson,'mistakes'));
   app.querySelectorAll('[data-retry-generator]').forEach(b=>b.onclick=()=>{
     sprint={answered:0,correct:0,target:10,active:true};
     practice.section=b.dataset.section;
@@ -516,18 +535,20 @@ function renderTest() {
         <div class="badge warn">Professor-style simulation</div>
         <h2 class="hero-title">Your dress rehearsal.</h2><div class="transaction-map"><div class="transaction-chip"><strong>15 questions</strong><br>31 possible points</div><div class="transaction-chip"><strong>120 minutes</strong><br>Fresh numbers every run</div></div>
         <p class="hero-sub">The point structure mirrors the practice test you provided: 5-point transaction effects, 5-point journal patterns, a 4-point trial-balance problem, and a 6-point journalization set. Every run uses fresh numbers and scenarios.</p>
-        <div class="hero-actions"><button class="btn btn-primary" id="startPracticeTest">Start timed test</button></div>
+        <div class="hero-actions"><button class="btn btn-primary" id="startPracticeTest">Start guided test ${icon('book')}</button><button class="btn btn-light" id="startExamTest">Start timed exam ${icon('clock')}</button></div>
       </section>
-      <section class="card" style="margin-top:16px"><h3>Test rules</h3><ul class="lesson-list"><li>No hints or immediate feedback while the test is running.</li><li>You can move backward and forward before submitting.</li><li>Journal entries are graded only when the entire entry is properly balanced and uses the correct accounts.</li><li>After submission, you get a 31-point score and explanations for every missed part.</li></ul></section>`;
-    app.querySelector('#startPracticeTest').onclick = startPracticeTest;
+      <section class="card" style="margin-top:16px"><h3>Test rules</h3><ul class="lesson-list"><li><strong>Guided test:</strong> no time limit. Open Review topic on any question, read the tutorial, and return to your saved answer.</li><li><strong>Timed exam:</strong> 120 minutes with no topic-review buttons during the exam. Tutorials are available with your results.</li><li>You can move backward and forward before submitting.</li><li>Journal entries are graded only when the entire entry is properly balanced and uses the correct accounts.</li><li>After submission, you get a 31-point score and explanations for every missed part.</li></ul></section>`;
+    app.querySelector('#startPracticeTest').onclick = ()=>startPracticeTest('guided');
+    app.querySelector('#startExamTest').onclick = ()=>startPracticeTest('exam');
     return;
   }
   if (testSession.finished) return renderTestResults();
   renderTestQuestion();
 }
 
-function startPracticeTest() {
+function startPracticeTest(mode='guided') {
   testSession = {
+    mode,
     items: buildPracticeTest(),
     answers: Array(15).fill(null),
     index: 0,
@@ -542,7 +563,7 @@ function startPracticeTest() {
 }
 function startTestTimer() {
   clearInterval(testSession?.timer);
-  if (!testSession || testSession.finished) return;
+  if (!testSession || testSession.finished || testSession.mode==='guided') return;
   testSession.timer = setInterval(()=>{
     if (!testSession || testSession.finished) return;
     testSession.seconds = Math.max(0,Math.ceil((testSession.endsAt-Date.now())/1000));
@@ -563,7 +584,7 @@ function renderTestQuestion() {
     <div class="test-shell">
       <aside class="test-sidebar">
         <div class="card flat">
-          <div class="small muted">Time remaining</div><div class="timer" id="timer">${formatTime(testSession.seconds)}</div>
+          <div class="small muted">${testSession.mode==='guided'?'GUIDED PRACTICE':'TIME REMAINING'}</div><div class="timer" id="timer">${testSession.mode==='guided'?'At your pace':formatTime(testSession.seconds)}</div>
           <div class="small muted" style="margin-top:10px">Answered ${testSession.answers.filter(a=>a!==null).length}/15</div>
           <div class="q-pills">${testSession.items.map((x,i)=>`<button class="q-pill ${i===testSession.index?'current':''} ${testSession.answers[i]!==null?'answered':''}" data-q-index="${i}">${i+1}</button>`).join('')}</div>
           <button class="btn btn-dark" id="submitWholeTest" style="width:100%;margin-top:15px">Submit test</button>
@@ -572,10 +593,12 @@ function renderTestQuestion() {
       <section class="card question-card" id="testQuestionRoot">
         <div class="question-meta"><span class="badge">Question ${item.number}</span><span class="badge warn">${item.points} point${item.points===1?'':'s'}</span></div>
         <div class="question-text">${escapeHtml(q.prompt)}</div>
+        ${testSession.mode==='guided'?`<button class="topic-review" id="reviewTestTopic">${icon('book')} Review topic <span>Tutorial + worked example ${icon('arrow')}</span></button>`:''}
         ${renderAnswerControls(q,testSession.answers[testSession.index],true,'test-')}
         <div class="test-nav"><button class="btn btn-light" id="prevQ" ${testSession.index===0?'disabled':''}>Previous</button><button class="btn btn-primary" id="nextQ">${testSession.index===14?'Save answer':'Next'}</button></div>
       </section>
     </div>`;
+  app.querySelector('#reviewTestTopic')?.addEventListener('click',()=>openTutorial(topicForQuestion(q),'test'));
   app.querySelectorAll('[data-q-index]').forEach(b=>b.onclick=()=>{ saveCurrentTestAnswer(); testSession.index=Number(b.dataset.qIndex); renderTestQuestion(); });
   app.querySelector('#prevQ').onclick=()=>{ saveCurrentTestAnswer(); testSession.index--; renderTestQuestion(); };
   app.querySelector('#nextQ').onclick=()=>{ saveCurrentTestAnswer(); if(testSession.index<14)testSession.index++; renderTestQuestion(); };
@@ -601,7 +624,7 @@ function finishPracticeTest(auto=false) {
   const results=testSession.items.map((item,i)=>({item,grade:gradeQuestion(item.q,testSession.answers[i]),response:testSession.answers[i]}));
   const score=results.reduce((s,r)=>s+r.grade.score,0);
   testSession.finished=true; testSession.results=results; testSession.score=score; testSession.autoSubmitted=auto;
-  state.practiceTests.push({date:new Date().toISOString(),score});
+  state.practiceTests.push({date:new Date().toISOString(),score,mode:testSession.mode});
   state.practiceTests=state.practiceTests.slice(-12);
   // Add misses from the simulated test to mistake review without affecting mastery/streak.
   for(const r of results){
@@ -623,14 +646,15 @@ function renderTestResults() {
     <section class="card">
       <div style="display:flex;gap:22px;align-items:center;flex-wrap:wrap">
         <div class="score-ring" style="--pct:${pct}%"><span>${score}/31</span></div>
-        <div><div class="badge ${pct>=80?'good':pct>=65?'warn':'bad'}">${pct}%</div><h2 style="margin:8px 0 4px">Practice Test Results</h2><p class="muted">${testSession.autoSubmitted?'Time expired and the test was submitted automatically.':'Test submitted.'} ${missed.length ? `${missed.length} question(s) need review.` : 'Perfect run.'}</p></div>
+        <div><div class="badge ${pct>=80?'good':pct>=65?'warn':'bad'}">${pct}%</div><h2 style="margin:8px 0 4px">${testSession.mode==='guided'?'Guided Practice Results':'Timed Exam Results'}</h2><p class="muted">${testSession.autoSubmitted?'Time expired and the test was submitted automatically.':'Test submitted.'} ${missed.length ? `${missed.length} question(s) need review.` : 'Perfect run.'}</p></div>
       </div>
       <div class="hero-actions"><button class="btn btn-primary" id="newTest">Generate a new test</button><button class="btn btn-light" id="reviewWeak">Practice weakest area</button></div>
     </section>
     <section style="margin-top:16px" class="grid">
-      ${testSession.results.map((r,i)=>`<div class="card review-card ${r.grade.correct?'':'wrong'}"><div class="question-meta"><span class="badge">Q${r.item.number}</span><span class="badge ${r.grade.correct?'good':'bad'}">${r.grade.score}/${r.grade.max}</span></div><div class="mistake-prompt">${escapeHtml(r.item.q.prompt)}</div>${r.grade.correct?'<p class="small muted">Correct.</p>':`<p class="small"><strong>Your answer:</strong><br><span style="white-space:pre-line">${escapeHtml(responseToText(r.item.q,r.response))}</span></p><p class="small"><strong>Correct answer:</strong></p><div class="expected">${escapeHtml(expectedAnswerText(r.item.q))}</div><p class="small muted">${escapeHtml(r.item.q.explanation)}</p>`}</div>`).join('')}
+      ${testSession.results.map((r,i)=>`<div class="card review-card ${r.grade.correct?'':'wrong'}"><div class="question-meta"><span class="badge">Q${r.item.number}</span><span class="badge ${r.grade.correct?'good':'bad'}">${r.grade.score}/${r.grade.max}</span></div><div class="mistake-prompt">${escapeHtml(r.item.q.prompt)}</div>${r.grade.correct?'<p class="small muted">Correct.</p>':`<p class="small"><strong>Your answer:</strong><br><span style="white-space:pre-line">${escapeHtml(responseToText(r.item.q,r.response))}</span></p><p class="small"><strong>Correct answer:</strong></p><div class="expected">${escapeHtml(expectedAnswerText(r.item.q))}</div><p class="small muted">${escapeHtml(r.item.q.explanation)}</p>`}<button class="topic-review" data-result-lesson="${topicForQuestion(r.item.q)}">${icon('book')} Review topic <span>Read the tutorial ${icon('arrow')}</span></button></div>`).join('')}
     </section>`;
-  app.querySelector('#newTest').onclick=()=>{ testSession=null; startPracticeTest(); };
+  app.querySelectorAll('[data-result-lesson]').forEach(b=>b.onclick=()=>openTutorial(b.dataset.resultLesson,'test'));
+  app.querySelector('#newTest').onclick=()=>{ const mode=testSession.mode;testSession=null;startPracticeTest(mode); };
   app.querySelector('#reviewWeak').onclick=()=>startPractice(weakestSection());
 }
 
@@ -693,7 +717,8 @@ function validateBackup(data){
   const v=data[k]?.[section.id];if(!nonnegative(v))throw new Error('This backup has invalid topic data.');clean[k][section.id]=k==='mastery'?clamp(v,0,100):Math.floor(v);
  }
  clean.mistakes=data.mistakes.slice(0,80).filter(m=>m&&sectionById(m.section)&&['generator','prompt','your','correct','explanation'].every(k=>typeof m[k]==='string')).map(m=>({id:m.id,section:m.section,generator:m.generator,prompt:m.prompt,your:m.your,correct:m.correct,explanation:m.explanation}));
- clean.practiceTests=data.practiceTests.filter(t=>t&&nonnegative(t.score)&&t.score<=31&&typeof t.date==='string').slice(-12).map(t=>({date:t.date,score:t.score}));
+ clean.practiceTests=data.practiceTests.filter(t=>t&&nonnegative(t.score)&&t.score<=31&&typeof t.date==='string').slice(-12).map(t=>({date:t.date,score:t.score,mode:t.mode==='guided'?'guided':'exam'}));
+ clean.lessonsRead=Object.fromEntries(Object.entries(data.lessonsRead||{}).filter(([id,date])=>TUTORIALS[id]&&typeof date==='string'));
  clean.lastSection=sectionById(data.lastSection)?data.lastSection:clean.lastSection;
  clean.daily=Object.fromEntries(Object.entries(data.daily||{}).filter(([k,v])=>/^\d{4}-\d{1,2}-\d{1,2}$/.test(k)&&nonnegative(v)));
  return clean;
