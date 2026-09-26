@@ -69,6 +69,9 @@ The journal editor becomes stacked account cards on small screens. Add/remove ro
 
 Open the deployed site in iPhone Safari, choose Share → Add to Home Screen, leave Open as Web App enabled if shown, and tap Add. The app includes a web manifest, standalone display settings, safe-area spacing, and 180/192/512-pixel icons. Replace an older shortcut if its title/icon remains cached. Internet access is required; this release does not cache the course offline.
 
+`mastery.html` uses its own `mastery.webmanifest`, so adding the Academy page to
+the Home Screen launches the Academy directly instead of the main trainer.
+
 ### Progress and backups
 
 Existing progress uses the same browser-storage key and is preserved. The More tab includes JSON backup/restore. Progress is local to each browser/origin; back it up before switching hostnames, devices, or clearing browser data. Mastery is a practice-progress estimate, not a predicted test result. Daily goals count practice attempts on the device’s local date.
