@@ -1,0 +1,219 @@
+{
+  "version": 1,
+  "hash": "0560e4be87d7",
+  "model": "gpt-4o-mini-tts",
+  "voice": "marin",
+  "aiGenerated": true,
+  "createdAt": "2026-09-26T08:47:00.341Z",
+  "tracks": [
+    {
+      "id": "equations",
+      "title": "01 · Why the signs change",
+      "url": "audio/equations-0560e4be87d7.mp3",
+      "duration": 212.1,
+      "segments": [
+        {
+          "start": 0,
+          "end": 44.3
+        },
+        {
+          "start": 44.3,
+          "end": 76.19999999999999
+        },
+        {
+          "start": 76.19999999999999,
+          "end": 124.49999999999999
+        },
+        {
+          "start": 124.49999999999999,
+          "end": 167.64999999999998
+        },
+        {
+          "start": 167.64999999999998,
+          "end": 212.09999999999997
+        }
+      ]
+    },
+    {
+      "id": "balances",
+      "title": "02 · Beginning, increases, decreases, ending",
+      "url": "audio/balances-0560e4be87d7.mp3",
+      "duration": 206.35,
+      "segments": [
+        {
+          "start": 0,
+          "end": 29.45
+        },
+        {
+          "start": 29.45,
+          "end": 75.25
+        },
+        {
+          "start": 75.25,
+          "end": 95.5
+        },
+        {
+          "start": 95.5,
+          "end": 129.2
+        },
+        {
+          "start": 129.2,
+          "end": 166.29999999999998
+        },
+        {
+          "start": 166.29999999999998,
+          "end": 180.39999999999998
+        },
+        {
+          "start": 180.39999999999998,
+          "end": 206.34999999999997
+        }
+      ]
+    },
+    {
+      "id": "bridge",
+      "title": "03 · Where do I start?",
+      "url": "audio/bridge-0560e4be87d7.mp3",
+      "duration": 199.1,
+      "segments": [
+        {
+          "start": 0,
+          "end": 25.3
+        },
+        {
+          "start": 25.3,
+          "end": 75.3
+        },
+        {
+          "start": 75.3,
+          "end": 107.15
+        },
+        {
+          "start": 107.15,
+          "end": 130.45000000000002
+        },
+        {
+          "start": 130.45000000000002,
+          "end": 153.25000000000003
+        },
+        {
+          "start": 153.25000000000003,
+          "end": 166.40000000000003
+        },
+        {
+          "start": 166.40000000000003,
+          "end": 199.10000000000002
+        }
+      ]
+    },
+    {
+      "id": "transactions",
+      "title": "04 · Who owes whom?",
+      "url": "audio/transactions-0560e4be87d7.mp3",
+      "duration": 191.4,
+      "segments": [
+        {
+          "start": 0,
+          "end": 34.45
+        },
+        {
+          "start": 34.45,
+          "end": 49.75
+        },
+        {
+          "start": 49.75,
+          "end": 77.6
+        },
+        {
+          "start": 77.6,
+          "end": 104.94999999999999
+        },
+        {
+          "start": 104.94999999999999,
+          "end": 116.54999999999998
+        },
+        {
+          "start": 116.54999999999998,
+          "end": 146.74999999999997
+        },
+        {
+          "start": 146.74999999999997,
+          "end": 191.39999999999998
+        }
+      ]
+    },
+    {
+      "id": "ledger",
+      "title": "05 · From the story to the statements",
+      "url": "audio/ledger-0560e4be87d7.mp3",
+      "duration": 187.9,
+      "segments": [
+        {
+          "start": 0,
+          "end": 28.2
+        },
+        {
+          "start": 28.2,
+          "end": 60.5
+        },
+        {
+          "start": 60.5,
+          "end": 71.3
+        },
+        {
+          "start": 71.3,
+          "end": 101.15
+        },
+        {
+          "start": 101.15,
+          "end": 130.75
+        },
+        {
+          "start": 130.75,
+          "end": 147.35
+        },
+        {
+          "start": 147.35,
+          "end": 161.4
+        },
+        {
+          "start": 161.4,
+          "end": 187.9
+        }
+      ]
+    },
+    {
+      "id": "complete",
+      "title": "The complete accounting study walk",
+      "url": "audio/complete-0560e4be87d7.mp3",
+      "duration": 1006.85,
+      "segments": [
+        {
+          "start": 0,
+          "end": 212.09999999999997,
+          "lesson": "equations"
+        },
+        {
+          "start": 214.09999999999997,
+          "end": 420.44999999999993,
+          "lesson": "balances"
+        },
+        {
+          "start": 422.44999999999993,
+          "end": 621.55,
+          "lesson": "bridge"
+        },
+        {
+          "start": 623.55,
+          "end": 814.9499999999999,
+          "lesson": "transactions"
+        },
+        {
+          "start": 816.9499999999999,
+          "end": 1004.8499999999999,
+          "lesson": "ledger"
+        }
+      ]
+    }
+  ]
+}
