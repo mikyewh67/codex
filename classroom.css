@@ -1,0 +1,101 @@
+.classroom-launch{position:relative;overflow:hidden;padding:30px;border:1px solid #6a5937;border-radius:26px;background:radial-gradient(ellipse at 100% 0,#e4cf9625,transparent 60%),#16171c;margin:24px 0}
+.classroom-launch h2{font-size:35px;line-height:1.05;margin:15px 0 20px}
+.classroom-launch-tags{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 25px}
+.classroom-launch-tags span{border:1px solid #4a4230;background:#e4cf9608;border-radius:20px;padding:7px 10px;color:var(--gold);font-size:11px}
+.classroom-launch .micro{margin:16px 0 0}
+.classroom{max-width:840px;margin:0 auto}
+.classroom-heading{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.classroom-heading .back{margin:0}
+.classroom-overview{display:flex;align-items:center;justify-content:space-between;gap:20px;margin:17px 0 20px}
+.classroom-overview h1{font-size:29px;letter-spacing:-1px;line-height:1.2;margin:8px 0 0}
+.classroom-score{font-size:12px;color:var(--mint);white-space:nowrap}
+.classroom-dots{display:flex;gap:7px;margin-bottom:22px;align-items:center}
+.classroom-dots>span{display:grid;place-items:center;color:#747889;line-height:8px;font-size:16px;flex:1;height:8px;border-radius:5px;background:#2a2e3a;transition:background .3s}
+.classroom-dots .done{background:#4a775e;color:#b2f0ce}
+.classroom-dots .current{background:var(--gold);color:#604f2a}
+.classroom-stage{min-width:0}
+.classroom-scene{position:relative;background:linear-gradient(145deg,#1b1d26,#12141b);border:1px solid #40414b;border-radius:27px;padding:30px;overflow:hidden;animation:classroom-enter .32s ease-out}
+.classroom-scene:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--gold)}
+.classroom-scene-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:21px}
+.classroom-page{color:var(--muted);font-size:10px;letter-spacing:1px;white-space:nowrap}
+.classroom-scene h2{font-size:32px;line-height:1.2;letter-spacing:-1px;margin:0 0 22px}
+.classroom-formula{display:flex;align-items:center;justify-content:center;gap:8px 11px;padding:24px 18px;background:#0b0e15;border:1px solid #564d38;border-radius:18px;color:var(--gold);font-size:20px;line-height:1.6;flex-wrap:wrap;text-align:center;margin-bottom:24px;font-weight:700}
+.classroom-formula>span{min-width:0;overflow-wrap:anywhere}
+.classroom-formula .operator{color:#f5e3b4;font-size:24px;font-weight:400}
+.classroom-visual{display:grid;gap:10px}
+.classroom-row{display:grid;grid-template-columns:minmax(130px,.8fr) minmax(0,1.2fr);align-items:center;gap:16px;padding:16px 18px;background:#222531;border:1px solid #343947;border-radius:15px;animation:classroom-enter .3s both;animation-delay:calc(var(--card-order)*.045s)}
+.classroom-row>span{font-size:12px;line-height:1.5;color:#c0c2d0}
+.classroom-row>strong{font-size:18px;line-height:1.45;font-weight:650;color:#f4f1e9;overflow-wrap:anywhere}
+.classroom-row.unknown{background:#e4cf9610;border:1px dashed var(--gold)}
+.classroom-row.unknown>strong{color:var(--gold);font-size:27px}
+.classroom-scene.flow .classroom-row{border-left:3px solid #a99568}
+.classroom-scene.entry .classroom-row:first-child{border-color:#6d7a98}
+.classroom-scene.compare .classroom-row{background:#181c27}
+.classroom-takeaway{margin:21px 0 0;padding-left:15px;border-left:2px solid #756442;font-size:14px;line-height:1.7;color:#cbc7bc}
+.classroom .checkpoint{scroll-margin-top:22px;background:#151c1c;border:1px solid #41634f;padding:26px;border-radius:25px;margin:22px 0;animation:classroom-enter .3s ease-out}
+.classroom .checkpoint.passed{border-color:#7ec79d;background:linear-gradient(160deg,#1b2b23,#131d1a)}
+.checkpoint-intro{display:flex;gap:14px;align-items:flex-start;margin-bottom:20px}
+.checkpoint-symbol{flex-shrink:0;display:grid;place-items:center;width:41px;height:41px;border:1px solid #608771;border-radius:13px;color:var(--mint);font-size:24px;background:#b2f0ce0b}
+.checkpoint-intro .eyebrow{color:var(--mint);font-size:10px;letter-spacing:1.5px}
+.checkpoint-intro h2{font-size:23px;letter-spacing:-.5px;line-height:1.35;margin:8px 0 0}
+.checkpoint-choices{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0 21px}
+.checkpoint-choice{display:flex;gap:12px;align-items:center;text-align:left;color:var(--text);border:2px solid #343e3b;background:#101714;padding:16px;min-height:74px;border-radius:17px;transition:border-color .15s,transform .15s}
+.checkpoint-choice>span{width:27px;height:27px;display:grid;place-items:center;border:1px solid #4d5952;border-radius:9px;font-size:11px;color:#bcc8c0;flex-shrink:0}
+.checkpoint-choice>strong{font-weight:650;font-size:15px;line-height:1.5;overflow-wrap:anywhere}
+.checkpoint-choice>b{color:var(--mint);margin-left:auto}
+.checkpoint-choice:hover:not(:disabled){border-color:#b5c1b2;transform:translateY(-2px)}
+.checkpoint-choice.right{background:#294a37;border-color:var(--mint);opacity:1}
+.checkpoint-choice.wrong{background:#42282d;border-color:var(--rose);animation:classroom-nudge .22s ease-in-out}
+.checkpoint-choice:disabled:not(.right){opacity:.45}
+.checkpoint-feedback{padding:18px;border-radius:15px;margin:20px 0;background:#ffb7bd0b;border:1px solid #755359;outline:none}
+.checkpoint-feedback>strong{color:var(--rose);font-size:15px;line-height:1.5}
+.checkpoint-feedback>p{color:var(--text);font-size:14px;line-height:1.65;margin:8px 0 0}
+.checkpoint-feedback.good{background:#b2f0ce0a;border-color:#659376}
+.checkpoint-feedback.good>strong{color:var(--mint)}
+.classroom-controls{padding:22px;border:1px solid #373c49;background:#151820;border-radius:22px;margin-top:20px}
+.classroom-controls[hidden]{display:none}
+.classroom-control-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.classroom-control-row label{display:flex;gap:9px;align-items:center;font-size:12px;color:var(--muted)}
+.classroom-control-row .btn{font-size:13px;min-height:46px;padding:12px 16px}
+.classroom-seek-label{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin:22px 0 5px}
+#classSeek{display:block;width:100%;accent-color:var(--gold);min-height:30px;cursor:pointer;margin:0}
+.classroom-controls .micro{margin:8px 0 0;min-height:20px}
+.classroom-footnote{color:var(--muted);font-size:11px;line-height:1.65;margin:18px 5px}
+.classroom-transcript{margin:18px 0;padding:0 5px;color:var(--muted)}
+.classroom-transcript summary{font-size:12px;cursor:pointer;padding:12px 0}
+.classroom-transcript p{font-size:14px;line-height:1.8;margin:10px 0}
+.classroom-finish{text-align:center;padding:45px 30px;border:1px solid #607c61;border-radius:30px;background:radial-gradient(ellipse at 50% 0,#b2f0ce18,transparent 60%),#151b17;animation:classroom-enter .4s}
+.classroom-trophy{display:grid;place-items:center;width:85px;height:85px;border-radius:25px;color:var(--gold);font-size:52px;border:1px solid #958152;margin:0 auto 28px;box-shadow:0 8px 0 #352e20;animation:pop .45s ease-out}
+.classroom-finish h2{font-size:37px;line-height:1.15;margin:18px 0}
+.classroom-finish .actions{justify-content:center}
+.classroom-finish p{font-size:15px}
+.is-speaking .classroom-scene-top:before{content:"";width:6px;height:6px;background:var(--gold);border-radius:50%;box-shadow:0 0 12px #e4cf9670}
+@keyframes classroom-enter{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes classroom-nudge{25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+@media(max-width:600px){
+ .in-classroom .shell{padding:0 14px 125px}
+ .in-classroom main{padding-top:14px}
+ .classroom-launch{padding:24px}.classroom-launch h2{font-size:32px}
+ .classroom-overview{align-items:flex-start;flex-direction:column;gap:12px;margin-top:12px}
+ .classroom-overview h1{font-size:26px}.classroom-score{font-size:11px}
+ .classroom-scene{padding:22px 16px;border-radius:22px}
+ .classroom-scene-top{gap:8px}.classroom-scene-top .eyebrow{font-size:9px;letter-spacing:1px}
+ .classroom-page{font-size:9px;letter-spacing:.3px}
+ .classroom-scene h2{font-size:27px;margin-bottom:19px}
+ .classroom-formula{font-size:17px;padding:19px 12px;gap:5px 8px;line-height:1.5}
+ .classroom-formula .operator{font-size:20px}
+ .classroom-row{grid-template-columns:1fr;gap:6px;padding:13px 14px}
+ .classroom-row>span{font-size:11px}.classroom-row>strong{font-size:17px}
+ .classroom-takeaway{font-size:13px}
+ .classroom .checkpoint{padding:22px 15px;border-radius:22px}
+ .checkpoint-intro{gap:10px}.checkpoint-intro h2{font-size:21px}
+ .checkpoint-choices{grid-template-columns:1fr;gap:10px}
+ .checkpoint-choice{min-height:61px;padding:13px}.checkpoint-choice>strong{font-size:15px}
+ .checkpoint .actions .primary{width:100%}
+ .classroom-controls{padding:18px 14px}.classroom-control-row{gap:10px}
+ .classroom-control-row>.btn{flex:1;font-size:12px;padding:12px 10px}
+ .classroom-control-row>label{width:100%;justify-content:center;margin-top:6px}
+ .classroom-seek-label{margin-top:14px}.classroom-finish{padding:32px 19px}
+ .classroom-finish h2{font-size:30px}.classroom-finish .btn{width:100%}
+}
+@media(prefers-reduced-motion:reduce){.classroom *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}

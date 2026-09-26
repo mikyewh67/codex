@@ -4,6 +4,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node tests/engine.test.mjs && node tests/mastery.test.mjs"
+    "test": "node tests/engine.test.mjs && node tests/mastery.test.mjs && node tests/classroom.test.mjs"
   }
 }

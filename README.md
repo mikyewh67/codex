@@ -124,3 +124,28 @@ Academy progress is local to this browser and origin under `ledger-academy-v1`; 
 it before clearing data or changing devices. It does not replace previous trainer
 progress. Reviews are scheduled after 5 minutes, 1 day, 3 days, and 7 days of successive
 independent successes on a pattern. Hints or corrections reset that pattern for review.
+
+## Interactive audio classroom
+
+Academy → Listen → **Learn with cards** opens 34 visual companion cards across the
+five narrated topics. Cards use the measured segment boundaries from `audio/manifest.json`;
+they are section-synchronized, not word-by-word alignment. Existing MP3s are reused.
+
+There are 17 multiple-choice checkpoints: every spoken question plus a final recall
+check for each topic. Playback pauses inside the generated silence before the spoken
+answer. Wrong answers display a small hint and allow retry without revealing the answer.
+Correct answers show a short explanation and wait for **Continue**. The lesson then
+resumes with the recorded explanation. The final card leads to a completion screen,
+the next topic, or fresh practice questions.
+
+Forward seeking and media-session controls cannot bypass an unanswered checkpoint.
+Replaying a card, changing speed, and seeking backward are supported. The current
+position, answers, retries, and topic completion are saved under `interactive` in the
+existing Academy progress object and included in its export/import. Old progress
+backups remain compatible. Listening checkpoints are tracked separately from the
+existing independent-practice accuracy and XP.
+
+Interactive mode pauses when the document becomes hidden or another Academy tab is
+opened. **Audio only** retains the continuous recording and download player for
+screen-off listening. Actual iPhone lock-screen playback still requires device testing.
+The interactive player does not call OpenAI and does not need audio regeneration.
