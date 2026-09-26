@@ -190,6 +190,7 @@ function renderDashboard() {
     ${modeCard('bolt','Quick practice','Sharpen debit & credit instincts.','debits-credits')}
     ${modeCard('target','Test simulation','15 questions. The real format.','test')}
     ${modeCard('book','Visual tutorials','Read it. See it. Understand it.','learn')}
+    <button class="mode-card" id="openFourDayCoach"><span class="mode-icon">${icon('spark')}</span><span class="mode-arrow">${icon('arrow')}</span><strong>4-Day Coach</strong><small>Equations, transactions + listen-along.</small></button>
    </div>
    <div class="card daily-card"><div class="daily-top"><strong>${icon('spark')}Your daily momentum</strong><span>${todayCount()} / 20</span></div><div class="progress-track"><div class="progress-fill" style="width:${Math.min(todayCount()/20*100,100)}%"></div></div><p>${todayCount()>=20?'Daily goal complete. Look at you showing up.':'Aim for 20 questions today. Every attempt counts.'}</p></div>
    ${latest?`<div class="history-mini"><span>Last ${latest.mode==='guided'?'guided practice':'timed test'}</span><strong>${latest.score} / 31 · ${Math.round(latest.score/31*100)}%</strong></div>`:''}
@@ -200,6 +201,7 @@ function renderDashboard() {
  </div>`;
  app.querySelector('#continueAdaptive').onclick=()=>sprint.active&&sprint.answered>0?setView('practice'):startPractice(weak.id);
  app.querySelector('#openLessons').onclick=()=>setView('learn');
+ app.querySelector('#openFourDayCoach').onclick=()=>{ window.location.href='coach.html'; };
  app.querySelectorAll('[data-practice-section]').forEach(b=>b.onclick=()=>startPractice(b.dataset.practiceSection));
  app.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>['test','mistakes','learn'].includes(b.dataset.mode)?setView(b.dataset.mode):startPractice(b.dataset.mode));
  countUp();
