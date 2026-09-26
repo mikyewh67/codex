@@ -37,7 +37,8 @@ export function nextCheckpoint(state) {return state.slides.find(s=>s.checkpoint&
 export function advanceClassroom(state,requestedTime) {
  let position=Math.max(0,Math.min(state.duration,Number.isFinite(requestedTime)?requestedTime:0));
  const locked=nextCheckpoint(state);
- if(locked&&position>=locked.gate){
+ // Browsers round media currentTime; retain a gate across microsecond drift.
+ if(locked&&position>=locked.gate-.005){
   position=locked.gate;state.index=locked.index;state.pending=locked.key;
   state.phase=state.answers[locked.key]?.correct?'correct':'question';
  }else{

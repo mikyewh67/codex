@@ -53,7 +53,7 @@ export function createClassroom({app,audio,getManifest,readProgress,writeProgres
  async function play(){if(!active||state.phase!=='listening')return;error='';try{await audio.play();}catch{if(active){error='Tap Play narration to start the audio.';updateControls();}}}
  function toggle(){if(!active)return;if(state.phase==='question'||state.phase==='correct'){replay();return;}if(state.phase==='complete')return;if(audio.paused)play();else audio.pause();updateControls();}
  function replay(){if(!active)return;const start=state.slides[state.index].start;state.feedback=null;state.selected=null;advanceClassroom(state,start);if(!ready){error='';audio.load();render(true);}else seek(start);play();}
- function seek(time){if(!active||!ready)return;const result=advanceClassroom(state,time);state.feedback=null;state.selected=null;if(result.pause)audio.pause();audio.currentTime=result.position;render(true);persist(true);}
+ function seek(time){if(!active||!ready)return;const result=advanceClassroom(state,time);state.feedback=null;state.selected=null;if(result.pause)audio.pause();audio.currentTime=result.position;find('#classSeek').value=result.position;render(true);persist(true);}
  function sync(){
   if(!active||!ready)return;
   const before=state.phase,oldIndex=state.index,result=advanceClassroom(state,audio.currentTime);

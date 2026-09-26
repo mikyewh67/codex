@@ -21,6 +21,7 @@ for(const lesson of AUDIO_LESSONS){
    // unanswered question rather than jumping to a later slide/answer.
    const movement=advanceClassroom(state,track.duration);
    assert.equal(movement.position,s.gate);assert.equal(state.index,i);assert.equal(state.phase,'question');assert.ok(movement.pause);
+   assert.equal(advanceClassroom(state,s.gate-.000001).phase,'question','Media timestamp rounding must not dismiss a checkpoint');
    assert.equal(continueClassroom(state),false);
    const wrong=q.options.find(v=>v!==q.answer),first=answerCheckpoint(state,wrong);
    assert.equal(first.correct,false);assert.equal(first.text,q.hints[0]);assert.equal(state.phase,'question');
