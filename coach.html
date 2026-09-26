@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0a0c" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Ledger Coach" />
+  <meta name="description" content="A four-day Accounting 1 coach for equation manipulation, transaction analysis, journal entries, ledger balances, and listen-along learning." />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="assets/icon-180.png" />
+  <link rel="icon" type="image/svg+xml" href="assets/icon.svg" />
+  <title>Ledger Coach · 4-Day Test Sprint</title>
+  <link rel="stylesheet" href="coach.css?v=1" />
+</head>
+<body>
+  <div class="coach-shell">
+    <header class="coach-topbar">
+      <a class="coach-brand" href="index.html" aria-label="Back to Ledger home">
+        <img src="assets/icon.svg" width="40" height="40" alt="" />
+        <span>ledger <small>4-DAY COACH</small></span>
+      </a>
+      <div class="test-pill"><span class="pulse"></span><span id="testCountdown">Sep 29</span></div>
+    </header>
+
+    <main id="coachApp" tabindex="-1"></main>
+
+    <nav class="coach-nav" aria-label="Coach navigation">
+      <button data-view="home" class="active"><span>⌂</span><small>Coach</small></button>
+      <button data-view="learn"><span>▷</span><small>Listen</small></button>
+      <button data-view="practice"><span>∞</span><small>Practice</small></button>
+      <button data-view="formula"><span>ƒ</span><small>Formulas</small></button>
+      <a href="index.html"><span>↩</span><small>Ledger</small></a>
+    </nav>
+  </div>
+  <div id="coachToast" role="status" aria-live="polite"></div>
+  <script type="module" src="js/coach.js?v=1"></script>
+</body>
+</html>
