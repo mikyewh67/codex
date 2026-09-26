@@ -86,3 +86,16 @@ Review topic buttons route by the question's generator when necessary (for examp
 The test welcome screen offers two modes: untimed guided practice with topic review on each question, and a timed 120-minute exam without in-question tutorial buttons. Both use the same 15-question / 31-point structure; histories distinguish guided and timed attempts. Topic review is available from timed-exam results.
 
 The tutorial update was checked across all 26 pages at 320, 390, 768, and 1440 pixel widths, with no page-level horizontal overflow. Browser checks verified interactive examples, reading persistence without mastery changes, and returning from tutorials with answers intact for all 15 guided-test questions, including numeric, multiple-choice, multi-part, journal, summary, and journal-set controls. The existing 800-question engine checks continue to pass.
+
+
+## Four-day coach
+
+The dashboard now links to `coach.html`, a focused test-sprint coach for the September 29 Test #1.
+
+- Four-day plan: equation control, transaction instincts, ledger/journal cleanup, then mixed review.
+- Procedurally generated equation, equity, income, Supplies, Accounts Receivable, Accounts Payable, ledger, normal-balance, transaction-analysis, journal-pattern, and trial-balance questions.
+- Wrong answers queue two new problems from the same pattern before returning to new material.
+- Transaction questions force the professor-style order: financial-position effect → accounts → debit/credit entry.
+- Listen-and-follow lessons use the browser Speech Synthesis API and visually highlight each step while it is read.
+- Formula wall includes the rearrangements most likely to be confused on Test #1.
+- Coach progress is stored locally under its own key and does not overwrite the existing Ledger practice history.
