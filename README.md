@@ -99,3 +99,28 @@ The dashboard now links to `coach.html`, a focused test-sprint coach for the Sep
 - Listen-and-follow lessons use the browser Speech Synthesis API and visually highlight each step while it is read.
 - Formula wall includes the rearrangements most likely to be confused on Test #1.
 - Coach progress is stored locally under its own key and does not overwrite the existing Ledger practice history.
+
+## Ledger Academy
+
+Open `mastery.html`, or choose **Ledger Academy** on the main dashboard. The original
+trainer, tutorials, and coach remain available with their existing progress.
+
+Academy adds eleven short learning units, guided versus recall practice, eight-question
+sessions, procedural questions, pattern-specific follow-ups, spaced review, self-rated
+flashcards, XP, and progress export/import. Equation generators cover every missing
+variable, including losses and missing withdrawals. Multi-step problems connect
+assets/liabilities at each date with equity changes, matching the professor's approach.
+Transactions follow financial position → accounts → balanced entry. Ledger questions
+include abnormal balances. Assistance is recorded separately from independent accuracy.
+
+Audio scripts have built-in answer pauses. The persistent player supports seek, rate,
+download, media-session controls, and measured segment highlighting. One continuous
+study-walk MP3 avoids background playlist transitions. **Audio is not generated until
+the owner completes [AUDIO_SETUP.md](AUDIO_SETUP.md).** No API key is present in the app.
+The full linked YouTube course has not been transcribed; it is linked as supplementary
+material, while the professor transcripts ground the teaching content.
+
+Academy progress is local to this browser and origin under `ledger-academy-v1`; export
+it before clearing data or changing devices. It does not replace previous trainer
+progress. Reviews are scheduled after 5 minutes, 1 day, 3 days, and 7 days of successive
+independent successes on a pattern. Hints or corrections reset that pattern for review.

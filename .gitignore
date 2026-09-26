@@ -7,3 +7,5 @@ upload/
 *.xlsx
 *.jpeg
 *.zip
+
+.audio-build/
