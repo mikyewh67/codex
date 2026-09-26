@@ -168,6 +168,18 @@ const TX=[
     explain:"Supplies increases and a payable is created."
   },
   {
+    label:"Buy equipment partly cash and partly on account",
+    text:function(n){
+      const cash=Math.max(100,Math.round((n*.4)/100)*100);
+      const owed=n-cash;
+      return "The business buys equipment for $"+fmt(n)+", pays $"+fmt(cash)+" cash now, and agrees to pay the remaining $"+fmt(owed)+" later.";
+    },
+    effect:"One asset increases; one asset decreases; Liabilities increase",
+    accounts:"Equipment, Cash, Accounts Payable",
+    entry:"Dr Equipment; Cr Cash; Cr Accounts Payable",
+    explain:"Equipment increases for the full cost. Cash decreases for the amount paid now, and Accounts Payable increases for the unpaid amount."
+  },
+  {
     label:"Pay an account payable",
     text:function(n){return "The business pays $"+fmt(n)+" cash on an existing account payable.";},
     effect:"Assets decrease; Liabilities decrease",
@@ -292,8 +304,8 @@ function genEquityEquation(){
   const end=beg+invest+income-wd;
   const missing=pick(["Beginning Equity","Investment","Income","Withdrawals","Ending Equity"]);
   const vals={"Beginning Equity":beg,"Investment":invest,"Income":income,"Withdrawals":wd,"Ending Equity":end};
-  let prompt="Beginning Equity $"+fmt(beg)+" + Investment $"+fmt(invest)+" + Income $"+fmt(income)+" − Withdrawals $"+fmt(wd)+" = Ending Equity $"+fmt(end)+".";
-  prompt=prompt.replace("$"+fmt(vals[missing]),"?");
+  function shown(name,value){return name===missing?"?":"$"+fmt(value);}
+  let prompt="Beginning Equity "+shown("Beginning Equity",beg)+" + Investment "+shown("Investment",invest)+" + Income "+shown("Income",income)+" − Withdrawals "+shown("Withdrawals",wd)+" = Ending Equity "+shown("Ending Equity",end)+".";
   const formulas={
     "Beginning Equity":"Beginning = Ending − Investment − Income + Withdrawals",
     "Investment":"Investment = Ending − Beginning − Income + Withdrawals",
