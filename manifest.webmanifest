@@ -2,7 +2,7 @@
   "name": "Ledger Lab — Accounting Coach",
   "short_name": "Ledger Lab",
   "description": "Interactive Accounting 1 study coach for Chapters 1–2.",
-  "start_url": "./",
+  "start_url": "./?v=4",
   "display": "standalone",
   "background_color": "#0a0b10",
   "theme_color": "#0a0b10",
