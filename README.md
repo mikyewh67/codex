@@ -1,154 +1,47 @@
-# Accounting 1 · Test #1 Trainer
+# Ledger Lab — Accounting 1 Coach
 
-An interactive, mobile-friendly Chapters 1–2 study app built around the supplied Accounting 1 professor recordings, notes, worksheets, practice assignments, handwritten notes, and Test #1 practice test/answer key.
+A mobile-first PWA built around the 7 Chapter 1–2 topics in this study plan:
 
-## Test profile used by the app
+1. Financial Statement Basics
+2. Transaction Analysis
+3. Account Operations
+4. Accounting Equation Manipulation
+5. Debits & Credits
+6. Financial Statements
+7. Recording Transactions
 
-- Test date: September 29, 2026
-- Chapters: 1–2
-- Professor emphasis: Chapter 2 / the accounting process
-- Practice-test structure: 15 questions, 31 points, 120 minutes
-- Major skills: transaction analysis, debit/credit logic, journalizing, posting/ledger balances, trial balance, accounting-equation manipulation, and financial statements
+## Included
 
-## What the app does
-
-- Procedurally generates effectively unlimited practice questions.
-- Tracks mastery by section in local browser storage.
-- If a practice answer is wrong, explains the error and automatically queues **two new problems of the same type** before returning to new material.
-- Repeats the same question family again if a reinforcement problem is missed.
-- Includes hints that preserve the professor's preferred order: **financial position → accounts → debit/credit**.
-- Includes journal-entry input tables, account-balance problems, trial-balance problems, and financial-statement calculations.
-- Logs mistakes for targeted review.
-- Includes a timed 15-question / 31-point practice test with fresh numbers on every run.
-
-## Test simulator point structure
-
-The simulation mirrors the supplied practice test's weighting:
-
-- Q1: 1 point
-- Q2: 5 points — accounting-equation effects
-- Q3–Q9: 1 point each
-- Q10: 5 points — journal-entry patterns
-- Q11–Q13: 1 point each
-- Q14: 4 points — trial balance / financial statement values
-- Q15: 6 points — six journal entries
-
-Total: **31 points**.
+- Duolingo-style learning path plus free topic selection
+- Learn / Practice / Mistakes / Challenge modes per topic
+- Visual lessons with device voice narration and frequent check-ins
+- Automatic spoken hint after 10 seconds, then a stronger hint if the learner stays stuck
+- On-demand verbal hint button
+- Equation guides shown directly under roll-forward and equation-manipulation questions
+- Infinite randomized practice generators
+- Two immediate similar follow-up questions after a miss
+- Visual explanation after the second miss
+- Debit/Credit rapid-fire mode
+- Journal-entry builder plus multiple-choice journal questions
+- Mixed tests with 10 / 15 / 20 / 30 questions
+- Local progress tracking: accuracy, mastery, streak, weak skills, mistakes mastered, readiness
+- Confetti and level unlocks for strong challenge scores
+- Installable PWA with offline caching
 
 ## Run locally
 
-No build step or dependencies are required.
+Any static server works. Example:
 
 ```bash
-python3 -m http.server 8000
+python -m http.server 8000
 ```
 
-Open `http://localhost:8000`.
+Then open `http://localhost:8000`.
 
-## GitHub Pages
+## Deploy
 
-Because this is a static site, it can be published directly with GitHub Pages from the repository root. The `.nojekyll` file is included.
+The app is static and can be deployed directly to Vercel, Netlify, GitHub Pages, or any HTTPS static host. No build step is required.
 
-In this repository, open **Settings → Pages**, select **Deploy from a branch**, choose **main** and **/ (root)**, then save.
+## Voice
 
-## Verify the question engine
-
-With Node.js installed, run `npm test`. No dependency installation is needed. The included checks cover 800 generated questions, selected remediation families, and the 15-question / 31-point practice-test structure.
-
-## Privacy / source handling
-
-The original uploaded course files, recordings/transcripts, spreadsheets, and handwritten images are **not included in this repository**. The app contains derived study logic and original question generators only.
-
-## Ledger mobile redesign
-
-The app now uses a matte-black and champagne-gold interface, a fixed five-tab mobile navigation bar, an animated mastery ring, and ten-question practice sessions. Incorrect answers still queue two targeted follow-ups, which can extend a session beyond ten questions. Session completion, correct streak milestones, and feedback have short animations that respect reduced-motion preferences.
-
-The journal editor becomes stacked account cards on small screens. Add/remove rows and live debit/credit totals are available in practice and test mode. Hints preserve entered answers. The timed test continues counting down when switching sections.
-
-### Home Screen installation
-
-Open the deployed site in iPhone Safari, choose Share → Add to Home Screen, leave Open as Web App enabled if shown, and tap Add. The app includes a web manifest, standalone display settings, safe-area spacing, and 180/192/512-pixel icons. Replace an older shortcut if its title/icon remains cached. Internet access is required; this release does not cache the course offline.
-
-`mastery.html` uses its own `mastery.webmanifest`, so adding the Academy page to
-the Home Screen launches the Academy directly instead of the main trainer.
-
-### Progress and backups
-
-Existing progress uses the same browser-storage key and is preserved. The More tab includes JSON backup/restore. Progress is local to each browser/origin; back it up before switching hostnames, devices, or clearing browser data. Mastery is a practice-progress estimate, not a predicted test result. Daily goals count practice attempts on the device’s local date.
-
-### Validation for this redesign
-
-The existing 800-question engine suite and JavaScript syntax checks pass. The redesign also has browser verification for responsive layouts, hints, reinforcement, session completion, local persistence, progress backup/restore, journal controls, test navigation/submission, reduced motion, and Home Screen assets.
-
-## Visual learning library
-
-The Learn tab contains eight tutorials with 26 reading pages. Each page combines plain-language explanation, an original visual or interactive example, and a takeaway. Topics cover account classification, statements, accounting equations, transaction effects, normal balances, journals, posting, account balances, trial balances, and statement preparation. Worked solutions can be revealed one step at a time and replayed. Reading completion is stored separately from practice mastery and is included in progress backups.
-
-Review topic buttons route by the question's generator when necessary (for example, an abnormal-balance question opens debit/credit instruction even when sampled in trial-balance practice). Practice answers, question identity, and reinforcement queues are retained during tutorial visits. Mistake review and every test-result card also link to a tutorial.
-
-The test welcome screen offers two modes: untimed guided practice with topic review on each question, and a timed 120-minute exam without in-question tutorial buttons. Both use the same 15-question / 31-point structure; histories distinguish guided and timed attempts. Topic review is available from timed-exam results.
-
-The tutorial update was checked across all 26 pages at 320, 390, 768, and 1440 pixel widths, with no page-level horizontal overflow. Browser checks verified interactive examples, reading persistence without mastery changes, and returning from tutorials with answers intact for all 15 guided-test questions, including numeric, multiple-choice, multi-part, journal, summary, and journal-set controls. The existing 800-question engine checks continue to pass.
-
-
-## Four-day coach
-
-The dashboard now links to `coach.html`, a focused test-sprint coach for the September 29 Test #1.
-
-- Four-day plan: equation control, transaction instincts, ledger/journal cleanup, then mixed review.
-- Procedurally generated equation, equity, income, Supplies, Accounts Receivable, Accounts Payable, ledger, normal-balance, transaction-analysis, journal-pattern, and trial-balance questions.
-- Wrong answers queue two new problems from the same pattern before returning to new material.
-- Transaction questions force the professor-style order: financial-position effect → accounts → debit/credit entry.
-- Listen-and-follow lessons use the browser Speech Synthesis API and visually highlight each step while it is read.
-- Formula wall includes the rearrangements most likely to be confused on Test #1.
-- Coach progress is stored locally under its own key and does not overwrite the existing Ledger practice history.
-
-## Ledger Academy
-
-Open `mastery.html`, or choose **Ledger Academy** on the main dashboard. The original
-trainer, tutorials, and coach remain available with their existing progress.
-
-Academy adds eleven short learning units, guided versus recall practice, eight-question
-sessions, procedural questions, pattern-specific follow-ups, spaced review, self-rated
-flashcards, XP, and progress export/import. Equation generators cover every missing
-variable, including losses and missing withdrawals. Multi-step problems connect
-assets/liabilities at each date with equity changes, matching the professor's approach.
-Transactions follow financial position → accounts → balanced entry. Ledger questions
-include abnormal balances. Assistance is recorded separately from independent accuracy.
-
-Audio scripts have built-in answer pauses. The persistent player supports seek, rate,
-download, media-session controls, and measured segment highlighting. One continuous
-study-walk MP3 avoids background playlist transitions. **Audio is not generated until
-the owner completes [AUDIO_SETUP.md](AUDIO_SETUP.md).** No API key is present in the app.
-The full linked YouTube course has not been transcribed; it is linked as supplementary
-material, while the professor transcripts ground the teaching content.
-
-Academy progress is local to this browser and origin under `ledger-academy-v1`; export
-it before clearing data or changing devices. It does not replace previous trainer
-progress. Reviews are scheduled after 5 minutes, 1 day, 3 days, and 7 days of successive
-independent successes on a pattern. Hints or corrections reset that pattern for review.
-
-## Interactive audio classroom
-
-Academy → Listen → **Learn with cards** opens 34 visual companion cards across the
-five narrated topics. Cards use the measured segment boundaries from `audio/manifest.json`;
-they are section-synchronized, not word-by-word alignment. Existing MP3s are reused.
-
-There are 17 multiple-choice checkpoints: every spoken question plus a final recall
-check for each topic. Playback pauses inside the generated silence before the spoken
-answer. Wrong answers display a small hint and allow retry without revealing the answer.
-Correct answers show a short explanation and wait for **Continue**. The lesson then
-resumes with the recorded explanation. The final card leads to a completion screen,
-the next topic, or fresh practice questions.
-
-Forward seeking and media-session controls cannot bypass an unanswered checkpoint.
-Replaying a card, changing speed, and seeking backward are supported. The current
-position, answers, retries, and topic completion are saved under `interactive` in the
-existing Academy progress object and included in its export/import. Old progress
-backups remain compatible. Listening checkpoints are tracked separately from the
-existing independent-practice accuracy and XP.
-
-Interactive mode pauses when the document becomes hidden or another Academy tab is
-opened. **Audio only** retains the continuous recording and download player for
-screen-off listening. Actual iPhone lock-screen playback still requires device testing.
-The interactive player does not call OpenAI and does not need audio regeneration.
+The current version uses the browser/device Speech Synthesis API, so no API key is required and no key is exposed in client-side code.
